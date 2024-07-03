@@ -34,6 +34,6 @@ urlpatterns = [
     # path('^progressbarupload/', include('progressbarupload.urls')),
     # path('', include('admin_soft.urls')),
      # Your other paths
-    re_path(r'^.*', TemplateView.as_view(template_name='index.html')),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
