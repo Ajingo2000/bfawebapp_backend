@@ -133,7 +133,7 @@ WSGI_APPLICATION = "bfaWeb.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-         'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         
     }
 }
@@ -194,7 +194,7 @@ SUMMERNOTE_THEME = "bs5"
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://bfa-webapp.vercel.app/",
+    "https://bfa-webapp.vercel.app",
 ]
 
 CORS_ALLOW_METHODS = [
