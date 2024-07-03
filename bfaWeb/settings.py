@@ -194,6 +194,7 @@ SUMMERNOTE_THEME = "bs5"
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://bfa-webapp.vercel.app/",
 ]
 
 CORS_ALLOW_METHODS = [
