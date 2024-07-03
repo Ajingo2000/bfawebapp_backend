@@ -227,6 +227,8 @@ AUTHENTICATION_BACKENDS = [
     # `allauth` specific authentication methods, such as login by email
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
+# Example: https://your-app.onrender.com/admin/
+ADMIN_URL = 'admin/'
 
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
