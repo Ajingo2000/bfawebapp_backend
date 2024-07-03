@@ -14,6 +14,8 @@ from rest_framework import viewsets
 from.serializers import *
 from django.core.mail import send_mail
 
+def home(request):
+    return HttpResponse("Welcome to the Django API")
 # Create your views here.
 @api_view(['GET'])
 def index(request):
