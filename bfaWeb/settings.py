@@ -98,7 +98,9 @@ MIDDLEWARE = [
     "social_django.middleware.SocialAuthExceptionMiddleware",  # added this #Social App Custom Settings
     # Add the account middleware:
     "allauth.account.middleware.AccountMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add WhiteNoise middleware here
 ]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = "bfaWeb.urls"
 
