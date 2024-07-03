@@ -14,9 +14,8 @@ from pathlib import Path
 from datetime import timedelta
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -133,7 +132,7 @@ WSGI_APPLICATION = "bfaWeb.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': BASE_DIR / 'db.sqlite3',
         
     }
 }
@@ -214,7 +213,7 @@ CORS_ALLOW_METHODS = (
 )
 # CORS_ORIGIN_ALLOW_ALL = True
 # Ensure you have the CSRF_TRUSTED_ORIGINS if needed
-CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000', 'https://bfa-webapp.vercel.app']
 
 SITE_ID = 2
 
