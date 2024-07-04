@@ -189,16 +189,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
-
 X_FRAME_OPTIONS = "ALLOWALL"
 SUMMERNOTE_THEME = "bs5"
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "https://bfa-webapp.vercel.app",
-]
 
 CORS_ALLOW_METHODS = [
     'GET',
@@ -215,9 +208,7 @@ CORS_ALLOW_METHODS = (
     "POST",
     "PUT",
 )
-# CORS_ORIGIN_ALLOW_ALL = True
-# Ensure you have the CSRF_TRUSTED_ORIGINS if needed
-CSRF_TRUSTED_ORIGINS = ['http://localhost:3000', 'https://bfa-webapp.vercel.app']
+CORS_ORIGIN_ALLOW_ALL = True
 
 SITE_ID = 2
 
