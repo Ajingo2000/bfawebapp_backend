@@ -13,9 +13,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import os
+from dotenv import load_dotenv
+# Load environment variables from .env file
+load_dotenv()
 
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -99,9 +101,7 @@ MIDDLEWARE = [
     "social_django.middleware.SocialAuthExceptionMiddleware",  # added this #Social App Custom Settings
     # Add the account middleware:
     "allauth.account.middleware.AccountMiddleware",
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add WhiteNoise middleware here
 ]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = "bfaWeb.urls"
 
@@ -132,13 +132,26 @@ WSGI_APPLICATION = "bfaWeb.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# ADDING THE VARIABLES FOR THE EXTERNAL CSS FILES HERE FIRST!
+dbName = os.getenv("DB_NAME")
+dbUser =  os.getenv("DB_USER")
+dbPwd = os.getenv("DB_PWD")
+dbHost = os.getenv("DB_HOST")
+dbPort =  os.getenv("DB_PORT")
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        'NAME': BASE_DIR / 'db.sqlite3',
-        
+        "ENGINE": "django.db.backends.postgresql",
+        #  'NAME': BASE_DIR / 'db.sqlite3',
+         "NAME": dbName,
+         "USER": dbUser,
+         "PASSWORD": dbPwd,
+         "HOST": dbHost,
+        "PORT": dbPort,   
     }
 }
+
+print(os.getenv("DB_PORT"))
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -175,8 +188,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 
-STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = "static/"
 # Add the path to your React build folder
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'build/static'),
@@ -189,13 +201,18 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+
+
 X_FRAME_OPTIONS = "ALLOWALL"
 SUMMERNOTE_THEME = "bs5"
 
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",
+#     "http://127.0.0.1:3000",
+#     "https://bfa-react-frontend.vercel.app",
+#     "https://giraffe-active-forcibly.ngrok-free.app",
+# ]
 
-CORS_ALLOW_METHODS = [
-    'GET',
-]
 CORS_ALLOW_HEADERS = [
     'Content-Type',
     'Authorization',
@@ -209,6 +226,8 @@ CORS_ALLOW_METHODS = (
     "PUT",
 )
 CORS_ORIGIN_ALLOW_ALL = True
+# Ensure you have the CSRF_TRUSTED_ORIGINS if needed
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000', 'https://bfa-react-frontend.vercel.app', "https://giraffe-active-forcibly.ngrok-free.app"]
 
 SITE_ID = 2
 
@@ -221,8 +240,6 @@ AUTHENTICATION_BACKENDS = [
     # `allauth` specific authentication methods, such as login by email
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
-# Example: https://your-app.onrender.com/admin/
-ADMIN_URL = 'admin/'
 
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
