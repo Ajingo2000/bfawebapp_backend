@@ -214,7 +214,7 @@ class ExpositoryDetailsView(RetrieveAPIView):
 
 # SPECIAL VIDEOS 
 class SpecialVideosView(ListAPIView):
-    queryset = Sermon.objects.all().filter(sermon_category__title="Special")
+    queryset = Sermon.objects.all().filter(sermon_category__title="Special Videos")
     serializer_class = SermonSerializer
     lookup_field = 'title'
     filter_backends = [filters.SearchFilter]
