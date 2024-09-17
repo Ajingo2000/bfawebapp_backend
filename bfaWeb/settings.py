@@ -31,6 +31,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+# settings.py
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,  # Adjust as needed
+}
 
 # REST_FRAMEWORK = {
 #     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -68,6 +73,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.github",
     "allauth.socialaccount.providers.google",
     "corsheaders",
+    "storages",
     "bfaWebApp",
     "bfaWebBlog",
     "bfaNewsletter",
@@ -101,7 +107,9 @@ MIDDLEWARE = [
     "social_django.middleware.SocialAuthExceptionMiddleware",  # added this #Social App Custom Settings
     # Add the account middleware:
     "allauth.account.middleware.AccountMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
 
 ROOT_URLCONF = "bfaWeb.urls"
 
@@ -139,19 +147,55 @@ dbPwd = os.getenv("DB_PWD")
 dbHost = os.getenv("DB_HOST")
 dbPort =  os.getenv("DB_PORT")
 
+# # DJANGO HEROKU SETTINGS
+# import django_heroku
+# django_heroku.settings(locals())
+
+import dj_database_url
+
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        #  'NAME': BASE_DIR / 'db.sqlite3',
-         "NAME": dbName,
-         "USER": dbUser,
-         "PASSWORD": dbPwd,
-         "HOST": dbHost,
-        "PORT": dbPort,   
-    }
+    "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=1800),
 }
 
-print(os.getenv("DB_PORT"))
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         #  'NAME': BASE_DIR / 'db.sqlite3',
+#          "NAME": dbName,
+#          "USER": dbUser,
+#          "PASSWORD": dbPwd,
+#          "HOST": dbHost,
+#         "PORT": dbPort,   
+#     }
+# }
+
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         #  'NAME': BASE_DIR / 'db.sqlite3',
+#          "NAME": "web_db",
+#          "USER": "postgres",
+#          "PASSWORD": "postgres",
+#          "HOST": "localhost",
+#         "PORT": "5432",
+#     }
+# }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         'NAME': BASE_DIR / 'db.sqlite3',
+        
+#     }
+# }
+
+
+
+# print(os.getenv("DB_PORT"))
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -188,30 +232,27 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 
-STATIC_URL = "static/"
-# Add the path to your React build folder
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'build/static'),
-]
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# STATIC_URL = "static/"
+# # Add the path to your React build folder
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'build/static'),
+# ]
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_URL = '/static/'
+# # Simplified static file serving.
+# # https://warehouse.python.org/project/whitenoise/
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# # Default primary key field type
+# # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
-
 X_FRAME_OPTIONS = "ALLOWALL"
 SUMMERNOTE_THEME = "bs5"
-
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:3000",
-#     "http://127.0.0.1:3000",
-#     "https://bfa-react-frontend.vercel.app",
-#     "https://giraffe-active-forcibly.ngrok-free.app",
-# ]
 
 CORS_ALLOW_HEADERS = [
     'Content-Type',
@@ -225,9 +266,31 @@ CORS_ALLOW_METHODS = (
     "POST",
     "PUT",
 )
-CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_ALLOW_ALL = True 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:3001",
+    "http://127.0.0.1:3001",
+    "https://bfa-react-frontend.vercel.app",
+    "https://giraffe-active-forcibly.ngrok-free.app",
+    "https://aedcf7aa-bddf-470d-b5ba-a15cef109669.e1-eu-north-azure.choreoapps.dev",
+    "https://storage.googleapis.com",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "https://bfa-react-frontend.vercel.app",
+    "https://giraffe-active-forcibly.ngrok-free.app",
+    "https://aedcf7aa-bddf-470d-b5ba-a15cef109669.e1-eu-north-azure.choreoapps.dev",
+    "https://storage.googleapis.com",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
 # Ensure you have the CSRF_TRUSTED_ORIGINS if needed
-CSRF_TRUSTED_ORIGINS = ['http://localhost:3000', 'https://bfa-react-frontend.vercel.app', "https://giraffe-active-forcibly.ngrok-free.app"]
 
 SITE_ID = 2
 
@@ -272,8 +335,31 @@ EMAIL_PORT = 587
 
 
 
+# GOOGLE CLOUD SERVICES AND STORAGE CONFIGS HERE BELOW 
+import os
+from google.oauth2 import service_account
 
+# Google Cloud Storage settings
+GS_BUCKET_NAME = os.getenv("GS_BUCKET_NAME", "bfa-backend-api")
+GS_PROJECT_ID = os.getenv("GS_PROJECT_ID", "vivid-union-430420-t2")
 
+GS_CREDENTIALS_PATH = os.getenv('GS_CREDENTIALS_PATH')
+if GS_CREDENTIALS_PATH:
+    GS_CREDENTIALS = service_account.Credentials.from_service_account_file(GS_CREDENTIALS_PATH)
+else:
+    GS_CREDENTIALS = None
 
+# Static files (CSS, JavaScript, images)
+STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+STATIC_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/static/'
+
+# Media files (uploads)
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+MEDIA_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/media/'
+
+# Optionally, set cache control headers
+GS_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
 
 
