@@ -337,29 +337,30 @@ EMAIL_PORT = 587
 
 # GOOGLE CLOUD SERVICES AND STORAGE CONFIGS HERE BELOW 
 import os
+import json
 from google.oauth2 import service_account
 
 # Google Cloud Storage settings
 GS_BUCKET_NAME = os.getenv("GS_BUCKET_NAME", "bfa-backend-api")
 GS_PROJECT_ID = os.getenv("GS_PROJECT_ID", "vivid-union-430420-t2")
 
-GS_CREDENTIALS_PATH = os.getenv('GS_CREDENTIALS_PATH')
-if GS_CREDENTIALS_PATH:
-    GS_CREDENTIALS = service_account.Credentials.from_service_account_file(GS_CREDENTIALS_PATH)
+# Load the credentials from environment variable
+GS_CREDENTIALS_JSON = os.getenv('GS_CREDENTIALS_JSON')
+if GS_CREDENTIALS_JSON:
+    GS_CREDENTIALS_INFO = json.loads(GS_CREDENTIALS_JSON)
+    GS_CREDENTIALS = service_account.Credentials.from_service_account_info(GS_CREDENTIALS_INFO)
 else:
     GS_CREDENTIALS = None
 
 # Static files (CSS, JavaScript, images)
 STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-STATIC_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/static/'
+STATIC_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/bfaWeb/static/'
 
 # Media files (uploads)
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-MEDIA_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/media/'
+MEDIA_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/bfaWeb/media/'
 
 # Optionally, set cache control headers
 GS_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
-
-
