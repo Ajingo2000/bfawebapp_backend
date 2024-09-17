@@ -354,11 +354,11 @@ else:
 
 # Static files (CSS, JavaScript, images)
 STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-STATIC_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/bfaWeb/static/'
+STATIC_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/static/'
 
 # Media files (uploads)
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-MEDIA_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/bfaWeb/media/'
+MEDIA_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/media/'
 
 # Optionally, set cache control headers
 GS_OBJECT_PARAMETERS = {
