@@ -366,7 +366,7 @@ GS_OBJECT_PARAMETERS = {
 }
 
 
-rom django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model
 from django.db.utils import OperationalError
 
 # Check for environment variables
