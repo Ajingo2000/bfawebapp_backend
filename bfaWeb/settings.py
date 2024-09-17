@@ -365,28 +365,3 @@ GS_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
 
-
-from django.contrib.auth import get_user_model
-from django.db.utils import OperationalError
-
-# Check for environment variables
-SUPERUSER_USERNAME = os.getenv("DJANGO_SUPERUSER_USERNAME")
-SUPERUSER_EMAIL = os.getenv("DJANGO_SUPERUSER_EMAIL")
-SUPERUSER_PASSWORD = os.getenv("DJANGO_SUPERUSER_PASSWORD")
-
-if SUPERUSER_USERNAME and SUPERUSER_EMAIL and SUPERUSER_PASSWORD:
-    try:
-        User = get_user_model()
-        if not User.objects.filter(username=SUPERUSER_USERNAME).exists():
-            User.objects.create_superuser(
-                username=SUPERUSER_USERNAME,
-                email=SUPERUSER_EMAIL,
-                password=SUPERUSER_PASSWORD
-            )
-            print("Superuser created successfully.")
-        else:
-            print("Superuser already exists.")
-    except OperationalError:
-        print("Database is unavailable, skipping superuser creation.")
-
-
